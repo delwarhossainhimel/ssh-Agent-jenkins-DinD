@@ -32,5 +32,7 @@ ExecStart=/usr/bin/dockerd -D -H unix:///var/run/docker.sock --tlsverify --tlsca
 systemctl daemon-reload
 systemctl restart docker
 systemctl status docker.service
+## For Docker Client
+export DOCKER_HOST="tcp://IP:2376"
 
 
