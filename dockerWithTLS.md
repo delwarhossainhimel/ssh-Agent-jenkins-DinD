@@ -4,6 +4,7 @@ curl -fsSL https://get.docker.com -o install-docker.sh
 bash install-docker.sh
 usermod -aG docker himel
 ## Create Cetificates
+<p>
 openssl genrsa -aes256 -out ca-key.pem 4096 \
 openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem \
 openssl genrsa -out server-key.pem 4096 \
@@ -11,7 +12,8 @@ openssl req -subj "/CN=192.168.60.10" -sha256 -new -key server-key.pem -out serv
 echo subjectAltName = DNS:192.168.60.10,IP:192.168.60.10,IP:127.0.0.1 >> extfile.cnf \
 echo subjectAltName = DNS:$HOST,IP:192.168.60.10,IP:127.0.0.1 >> extfile.cnf \
 echo extendedKeyUsage = serverAuth >> extfile.cnf \
-openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf \
+openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf
+</p>
 ## Create Client Key
 
 openssl genrsa -out key.pem 4096
