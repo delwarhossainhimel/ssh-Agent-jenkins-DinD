@@ -7,10 +7,10 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
 
 Mount docker socket from host to docker agent
 
-Mounts
+### Mounts
 type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock
 
-Connect with ssh
+### Connect with ssh
 
-user: jenkins
+user: jenkins \
 password: jenkins
