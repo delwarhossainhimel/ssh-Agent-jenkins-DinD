@@ -29,9 +29,9 @@ sudo vim /etc/systemd/system/docker.service.d
 ExecStart=
 ExecStart=/usr/bin/dockerd -D -H unix:///var/run/docker.sock --tlsverify --tlscacert=/home/himel/.docker/ca.pem --tlscert=/home/himel/.docker/server-cert.pem --tlskey=/home/himel/.docker/server-key.pem -H tcp://0.0.0.0:2376
 
-systemctl daemon-reload
-systemctl restart docker
-systemctl status docker.service
+systemctl daemon-reload <br />
+systemctl restart docker <br />
+systemctl status docker.service <br />
 ## For Docker Client
 mkdir ~/.docker
 
