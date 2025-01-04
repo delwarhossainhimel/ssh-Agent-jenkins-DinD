@@ -34,7 +34,9 @@ systemctl restart docker
 systemctl status docker.service
 ## For Docker Client
 mkdir ~/.docker
-copy key.pam,cert.pam,ca.pm file to client
+
+#### copy key.pam,cert.pam,ca.pam file to client
+
 export DOCKER_HOST="tcp://IP:2376"
 
 
