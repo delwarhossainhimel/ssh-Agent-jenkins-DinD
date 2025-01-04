@@ -27,15 +27,15 @@ sudo systemctl stop docker \
 sudo mkdir /etc/systemd/system/docker.service.d \
 sudo vim /etc/systemd/system/docker.service.d \
 
-[Service] 
-ExecStart=
-ExecStart=/usr/bin/dockerd -D -H unix:///var/run/docker.sock --tlsverify --tlscacert=/home/himel/.docker/ca.pem --tlscert=/home/himel/.docker/server-cert.pem --tlskey=/home/himel/.docker/server-key.pem -H tcp://0.0.0.0:2376
+[Service] \
+ExecStart= \
+ExecStart=/usr/bin/dockerd -D -H unix:///var/run/docker.sock --tlsverify --tlscacert=/home/himel/.docker/ca.pem --tlscert=/home/himel/.docker/server-cert.pem --tlskey=/home/himel/.docker/server-key.pem -H tcp://0.0.0.0:2376 \
 
 systemctl daemon-reload \
 systemctl restart docker \
 systemctl status docker.service \
 ## For Docker Client
-mkdir ~/.docker \
+mkdir ~/.docker
 #### copy key.pam,cert.pam,ca.pam file to client \
 export DOCKER_HOST="tcp://IP:2376"
 
