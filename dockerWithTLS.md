@@ -20,10 +20,10 @@ echo extendedKeyUsage = clientAuth > extfile-client.cnf
 openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile-client.cnf
 
 ## Docker Configaration To run on tls
-cp -v {ca,cert,key}.pem ~/.docker
-sudo systemctl stop docker
-sudo mkdir /etc/systemd/system/docker.service.d
-sudo vim /etc/systemd/system/docker.service.d
+cp -v {ca,cert,key}.pem ~/.docker <br />
+sudo systemctl stop docker <br />
+sudo mkdir /etc/systemd/system/docker.service.d <br />
+sudo vim /etc/systemd/system/docker.service.d <br />
 
 [Service]
 ExecStart=
@@ -33,10 +33,8 @@ systemctl daemon-reload <br />
 systemctl restart docker <br />
 systemctl status docker.service <br />
 ## For Docker Client
-mkdir ~/.docker
-
-#### copy key.pam,cert.pam,ca.pam file to client
-
-export DOCKER_HOST="tcp://IP:2376"
+mkdir ~/.docker <br />
+#### copy key.pam,cert.pam,ca.pam file to client <br />
+export DOCKER_HOST="tcp://IP:2376" <br />
 
 
