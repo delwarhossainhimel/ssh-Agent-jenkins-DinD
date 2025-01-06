@@ -35,5 +35,23 @@ systemctl status docker.service
 mkdir ~/.docker
 ## copy key.pam,cert.pam,ca.pam file to client 
 export DOCKER_HOST="tcp://IP:2376"
+# Jenkins Configaration
+### Agent Configaration in UI
+In container mount in agent \
+type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+type=bind,src=/home/himel/agent-jenkins/cert,dst=/home/jenkins/cert 
+### Remote File System Root
+/home/jenkins/agent
+### in environment in jenkinsfile 
+DOCKER_TLS_VERIFY=1 \
+export DOCKER_CERT_PATH=/home/jenkins/cert \
+export DOCKER_HOST=tcp://192.168.60.10:2376
+
+    environment {
+        DOCKER_TLS_VERIFY = '1'
+        DOCKER_CERT_PATH = '/home/jenkins/cert'
+        DOCKER_HOST = 'tcp://192.168.60.10:2376'
+    
+    }
 
 
