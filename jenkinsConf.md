@@ -6,7 +6,8 @@ vim /usr/lib/systemd/system/docker.service
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
 
 Mount docker socket from host to docker agent
-
+### Remote File System Root(on agent Template)
+/home/jenkins/agent
 ### Mounts
 type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock
 
