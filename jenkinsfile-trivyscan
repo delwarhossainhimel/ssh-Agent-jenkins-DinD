@@ -1,0 +1,105 @@
+pipeline {
+    agent {
+        label 'agent'
+    }
+    environment {
+        DOCKER_TLS_VERIFY = '1'
+        DOCKER_CERT_PATH = '/home/jenkins/cert'
+        DOCKER_HOST = 'tcp://192.168.60.10:2376'
+        CONTAINER_NAME = "staging-error-page"
+        DOCKER_IMAGE = "staging-error-page:latest"
+        CONTAINER_PORT = "3000"
+        HOST_PORT = "3000"
+        RESTART_POLICY = "always"
+        TRIVY_FS_SCAN_REPORT = "filesystem_vulnerability_report.txt"
+        TRIVY_IMAGE_SCAN_REPORT = "docker_image_vulnerability_report.txt"
+        TRIVY_SEVERITY = "HIGH,CRITICAL"
+        DOCKER_REPO_URL = "registry.hidayahsmart.solutions"
+        DOCKER_HUB_CREDENTIALS = "dockerRegistry"
+    
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Stop and Remove Docker Container') {
+            steps {
+                script {
+                    def isRunning = sh(script: "docker inspect -f '{{.State.Running}}' ${env.CONTAINER_NAME}", returnStatus: true)
+                    if (isRunning == 0) {
+                        try {
+                            sh "docker stop ${env.CONTAINER_NAME}"
+                            sh "docker rm ${env.CONTAINER_NAME}"
+                            echo "Stopped and removed existing container: ${env.CONTAINER_NAME}"
+                        } catch (Exception e) {
+                            error "Failed to stop or remove container: ${env.CONTAINER_NAME}. Error: ${e.message}"
+                        }
+                    } else {
+                        echo "Container ${env.CONTAINER_NAME} is not running, no need to stop or remove."
+                    }
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    try {
+                        sh "docker build -t ${env.DOCKER_IMAGE} -f Dockerfile ."
+                        echo "Docker image built successfully: ${env.DOCKER_IMAGE}"
+                    } catch (Exception e) {
+                        error "Failed to build Docker image: ${env.DOCKER_IMAGE}. Error: ${e.message}"
+                    }
+                }
+            }
+        }
+        stage('login Docker Private registry') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        echo 'Building Docker image...'
+                        sh """
+                            echo "$DOCKER_PASS" | docker login ${DOCKER_REPO_URL} -u "$DOCKER_USER" --password-stdin
+                            #docker build -t ${DOCKER_IMAGE} -f Dockerfile-staging . || exit 1
+                            #docker logout ${DOCKER_REPO_URL}
+                        """
+                    }
+                }
+            }
+        }
+        stage('Trivy Docker Image Scan') {
+            steps {
+                script {
+                    echo 'Running Trivy Docker Image scan...'
+                    sh """
+                        trivy image --severity ${TRIVY_SEVERITY} --no-progress --exit-code 0 --format table ${DOCKER_IMAGE} > ${TRIVY_IMAGE_SCAN_REPORT}
+                    """
+                    if (!fileExists("${TRIVY_IMAGE_SCAN_REPORT}") || 
+                        sh(script: "wc -l < ${TRIVY_IMAGE_SCAN_REPORT}", returnStdout: true).trim().toInteger() == 0) {
+                        sh "echo 'No high or critical vulnerabilities found in Docker Image scan.' > ${TRIVY_IMAGE_SCAN_REPORT}"
+                    }
+                    echo "Docker Image scan report saved at: ${TRIVY_IMAGE_SCAN_REPORT}"
+                }
+            }
+        }
+        stage('running docker image') {
+            steps {
+                script {
+                    try {
+                        sh "docker run --name ${env.CONTAINER_NAME} --restart ${env.RESTART_POLICY}  -p ${env.HOST_PORT}:${env.CONTAINER_PORT} -d ${env.DOCKER_IMAGE}"
+                        echo "Docker container started successfully"
+                    } catch (Exception e) {
+                        error "Failed to build Docker image:  ${env.DOCKER_IMAGE}. Error: ${e.message}"
+                    }
+                }
+            }
+        }
+        stage('java Version') {
+            steps {
+                sh 'java --version' // This will check the Docker version
+            
+            }
+        }
+    }
+}
