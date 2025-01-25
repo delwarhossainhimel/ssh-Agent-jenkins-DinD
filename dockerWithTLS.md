@@ -41,11 +41,11 @@ export DOCKER_HOST="tcp://IP:2376"
 ### Agent Configaration in UI
 In container mount in agent \
 type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-type=bind,src=/home/himel/agent-jenkins/cert,dst=/home/jenkins/cert 
+type=bind,src=/home/himel/agent-jenkins/cert,dst=/home/jenkins/cert \
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/e400728b-6e64-4056-9da1-5870e4c548e6" />
 
 ### Remote File System Root
-/home/jenkins/agent
+/home/jenkins/agent \
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/c6cb04a4-58e0-4086-9551-d0c150a5cf52" />
 
 ### in environment in jenkinsfile 
