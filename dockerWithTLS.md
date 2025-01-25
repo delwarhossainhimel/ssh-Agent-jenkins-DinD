@@ -48,11 +48,20 @@ type=bind,src=/home/himel/agent-jenkins/cert,dst=/home/jenkins/cert \
 /home/jenkins/agent \
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/c6cb04a4-58e0-4086-9551-d0c150a5cf52" />
 
+### Login to agent using agent ssh credential 
+
+<img width="668" alt="image" src="https://github.com/user-attachments/assets/06488f41-a4f9-4f04-8dea-aa8f65abd93b" />
+
+
 ### in environment in jenkinsfile 
 DOCKER_TLS_VERIFY=1 \
 export DOCKER_CERT_PATH=/home/jenkins/cert \
 export DOCKER_HOST=tcp://192.168.60.10:2376
-
+### Demo Jenkins initiation sample
+pipeline {
+    agent {
+        label 'agent'
+    }
     environment {
         DOCKER_TLS_VERIFY = '1'
         DOCKER_CERT_PATH = '/home/jenkins/cert'
