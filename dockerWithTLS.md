@@ -58,15 +58,14 @@ DOCKER_TLS_VERIFY=1 \
 export DOCKER_CERT_PATH=/home/jenkins/cert \
 export DOCKER_HOST=tcp://192.168.60.10:2376
 ### Demo Jenkins initiation sample
-pipeline {
-    agent {
-        label 'agent'
-    }
-    environment {
-        DOCKER_TLS_VERIFY = '1'
-        DOCKER_CERT_PATH = '/home/jenkins/cert'
-        DOCKER_HOST = 'tcp://192.168.60.10:2376'
-    
+pipeline { \
+    agent { \
+        label 'agent' \
+    } \
+    environment { \
+        DOCKER_TLS_VERIFY = '1' \
+        DOCKER_CERT_PATH = '/home/jenkins/cert' \
+        DOCKER_HOST = 'tcp://192.168.60.10:2376' \ 
     }
 
 
