@@ -22,7 +22,7 @@ openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem 
 cp -v {ca,cert,key}.pem ~/.docker \
 sudo systemctl stop docker \
 sudo mkdir /etc/systemd/system/docker.service.d \
-sudo vim /etc/systemd/system/docker.service.d
+sudo vim /etc/systemd/system/docker.service.d/override.conf
 
 [Service] \
 ExecStart= \
