@@ -35,6 +35,9 @@ systemctl status docker.service
 mkdir ~/.docker
 ## copy key.pam,cert.pam,ca.pam file to client 
 export DOCKER_HOST="tcp://IP:2376"
+# Jenkins Credential
+![image](https://github.com/user-attachments/assets/e7cd5f46-fac1-41b9-8109-3f1d47a587b3)
+
 # Jenkins Configaration
 <img width="661" alt="image" src="https://github.com/user-attachments/assets/4ba4913c-a635-4207-a9a2-bed213c5ef59" />
 
