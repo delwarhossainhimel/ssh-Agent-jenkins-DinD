@@ -45,6 +45,9 @@ export DOCKER_HOST="tcp://IP:2376"
 In container mount in agent \
 type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
 type=bind,src=/home/himel/agent-jenkins/cert,dst=/home/jenkins/cert \
+DOCKER_TLS_VERIFY=1 \
+export DOCKER_CERT_PATH=/home/jenkins/cert \
+export DOCKER_HOST=tcp://192.168.60.10:2376 \
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/e400728b-6e64-4056-9da1-5870e4c548e6" />
 
 ### Remote File System Root
